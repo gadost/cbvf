@@ -17,7 +17,7 @@ while read file
 do
 	#use ffprobe via docker. Also you can use ffprobe -v error -count_frames -threads 0 -i $file 2>&1
 	bfile=$(docker run --sig-proxy=true --rm -v $video_path:$video_path sjourdan/ffprobe -v error -count_frames -threads 0 -i $file 2>&1)
-	x=$(echo $bfile| grep -c partial)
+	x=$(echo $bfile| grep -cE "(partial|no frame)")
 	if [ "$x" -eq 1 ]; then
 		echo $file >> broken.tmp
                 echo "found partial file ${file}"
